@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plane, Menu, User } from "lucide-react";
+import { Plane, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
 import { SignOutButton } from "@/components/auth/SignOutButton";
@@ -58,9 +58,6 @@ export async function Navbar() {
               </Link>
             </>
           )}
-          <Button variant="ghost" size="icon" className="md:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
         </div>
       </div>
     </header>
