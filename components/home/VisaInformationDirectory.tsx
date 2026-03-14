@@ -6,7 +6,13 @@ import { Search, Map, Clock, DollarSign, FileText, ChevronDown } from "lucide-re
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
+
+type Destination = typeof destinations[0];
 
 const destinations = [
   {
@@ -73,7 +79,7 @@ const destinations = [
 
 export function VisaInformationDirectory() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [selectedDest, setSelectedDest] = useState<Destination | null>(null);
 
   const filteredDestinations = destinations.filter((dest) =>
     dest.country.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -116,72 +122,105 @@ export function VisaInformationDirectory() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.2 }}
               >
-                <Card className={`overflow-hidden transition-all duration-300 ${expandedId === dest.id ? 'ring-2 ring-primary shadow-xl' : 'hover:border-primary/50 hover:shadow-md'}`}>
-                  <CardContent className="p-0">
-                    <div className="p-6 cursor-pointer" onClick={() => setExpandedId(expandedId === dest.id ? null : dest.id)}>
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center gap-3">
-                          <span className="text-4xl">{dest.image}</span>
-                          <div>
-                            <h3 className="font-bold text-xl">{dest.country}</h3>
-                            <p className="text-sm text-muted-foreground">{dest.type}</p>
-                          </div>
-                        </div>
-                        <Badge variant={dest.difficulty === 'Easy' ? 'default' : dest.difficulty === 'Medium' ? 'secondary' : 'destructive'} 
-                               className={dest.difficulty === 'Easy' ? 'bg-green-500/10 text-green-600 hover:bg-green-500/20' : dest.difficulty === 'Medium' ? 'bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20' : ''}>
-                          {dest.difficulty}
-                        </Badge>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4 mt-6">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Clock className="h-4 w-4 shrink-0 text-primary" />
-                          <span>{dest.processingTime}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <DollarSign className="h-4 w-4 shrink-0 text-primary" />
-                          <span>{dest.fee}</span>
+                <Card 
+                  className="overflow-hidden transition-all duration-300 hover:border-primary/50 hover:shadow-lg cursor-pointer group h-full"
+                  onClick={() => setSelectedDest(dest)}
+                >
+                  <CardContent className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-4xl group-hover:scale-110 transition-transform">{dest.image}</span>
+                        <div>
+                          <h3 className="font-bold text-xl">{dest.country}</h3>
+                          <p className="text-sm text-muted-foreground">{dest.type}</p>
                         </div>
                       </div>
-                      
-                      <div className="mt-4 flex justify-center text-muted-foreground/50">
-                        <ChevronDown className={`h-5 w-5 transition-transform duration-300 ${expandedId === dest.id ? 'rotate-180' : ''}`} />
-                      </div>
+                      <Badge variant={dest.difficulty === 'Easy' ? 'default' : dest.difficulty === 'Medium' ? 'secondary' : 'destructive'} 
+                             className={dest.difficulty === 'Easy' ? 'bg-green-500/10 text-green-600 hover:bg-green-500/20' : dest.difficulty === 'Medium' ? 'bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20' : ''}>
+                        {dest.difficulty}
+                      </Badge>
                     </div>
 
-                    <AnimatePresence>
-                      {expandedId === dest.id && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="overflow-hidden bg-muted/30 border-t"
-                        >
-                          <div className="p-6">
-                            <h4 className="font-semibold flex items-center gap-2 mb-3 text-sm">
-                              <FileText className="h-4 w-4 text-primary" /> Key Requirements
-                            </h4>
-                            <ul className="space-y-2">
-                              {dest.requirements.map((req, idx) => (
-                                <li key={idx} className="text-sm text-muted-foreground flex items-start gap-2">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
-                                  {req}
-                                </li>
-                              ))}
-                            </ul>
-                            
-                            <Button className="w-full mt-6 rounded-lg text-sm bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border-none">
-                              Start Application for {dest.country}
-                            </Button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    <div className="grid grid-cols-2 gap-4 mt-6">
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Clock className="h-4 w-4 shrink-0 text-primary" />
+                        <span>{dest.processingTime}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <DollarSign className="h-4 w-4 shrink-0 text-primary" />
+                        <span>{dest.fee}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 flex items-center justify-center text-primary text-xs font-bold uppercase tracking-wider gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      View Details <ChevronDown className="-rotate-90 h-3 w-3" />
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </AnimatePresence>
+
+          {/* Detailed Dialog */}
+          <Dialog open={!!selectedDest} onOpenChange={(open) => !open && setSelectedDest(null)}>
+            <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden rounded-2xl border-none">
+              {selectedDest && (
+                <div className="flex flex-col">
+                  {/* Dialog Header/Hero */}
+                  <div className="bg-primary p-8 text-primary-foreground relative overflow-hidden">
+                    <div className="absolute top-0 right-0 p-12 opacity-10 scale-[3] pointer-events-none">
+                      {selectedDest.image}
+                    </div>
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="text-4xl">{selectedDest.image}</span>
+                        <Badge variant="outline" className="text-white border-white/20 bg-white/10">
+                          {selectedDest.difficulty} Difficulty
+                        </Badge>
+                      </div>
+                      <h2 className="text-3xl font-black">{selectedDest.country}</h2>
+                      <p className="text-primary-foreground/80 font-medium">{selectedDest.type}</p>
+                    </div>
+                  </div>
+
+                  <div className="p-8 space-y-8 bg-white dark:bg-zinc-950">
+                    <div className="grid grid-cols-2 gap-8">
+                      <div className="space-y-1">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Processing Time</p>
+                        <p className="font-bold flex items-center gap-2">
+                          <Clock className="h-4 w-4 text-primary" /> {selectedDest.processingTime}
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Visa Fee</p>
+                        <p className="font-bold flex items-center gap-2">
+                          <DollarSign className="h-4 w-4 text-primary" /> {selectedDest.fee}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                        <FileText className="h-4 w-4" /> Required Documents
+                      </p>
+                      <div className="grid grid-cols-1 gap-3">
+                        {selectedDest.requirements.map((req, idx) => (
+                          <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
+                            <div className="h-2 w-2 rounded-full bg-primary shrink-0" />
+                            <span className="text-sm font-medium">{req}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Button className="w-full h-14 rounded-xl text-md font-black shadow-xl shadow-primary/20 transition-transform active:scale-95">
+                      Apply for {selectedDest.country} Visa
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </DialogContent>
+          </Dialog>
           
           {filteredDestinations.length === 0 && (
             <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center py-20 text-muted-foreground">
