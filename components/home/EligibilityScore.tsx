@@ -122,9 +122,9 @@ export function EligibilityScore() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Employment Status</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Select status" />
                               </SelectTrigger>
                             </FormControl>
@@ -149,9 +149,9 @@ export function EligibilityScore() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Savings / Funds Available</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Select range" />
                               </SelectTrigger>
                             </FormControl>
@@ -172,9 +172,9 @@ export function EligibilityScore() {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Past Travel History</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select onValueChange={field.onChange} value={field.value}>
                             <FormControl>
-                              <SelectTrigger>
+                              <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Select history" />
                               </SelectTrigger>
                             </FormControl>

@@ -46,7 +46,9 @@ export function VisaSuggestionForm() {
     resolver: zodResolver(visaSuggestionSchema),
     defaultValues: {
       destination: "",
+      purpose: "",
       duration: "",
+      budget: "",
     },
   });
 
@@ -104,16 +106,16 @@ export function VisaSuggestionForm() {
                         </FormItem>
                       )}
                     />
-                    
-                    <div className="grid grid-cols-2 gap-4">
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <FormField
                         control={form.control}
                         name="purpose"
                         render={({ field }) => (
                           <FormItem className="space-y-1.5">
                             <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Purpose</FormLabel>
-                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                              <SelectTrigger className="h-11 rounded-xl bg-zinc-50 dark:bg-zinc-900 border-transparent focus:border-primary/20 transition-all">
+                            <Select onValueChange={field.onChange} value={field.value}>
+                              <SelectTrigger className="h-11 w-full rounded-xl bg-zinc-50 dark:bg-zinc-900 border-transparent focus:border-primary/20 transition-all">
                                 <SelectValue placeholder="Select" />
                               </SelectTrigger>
                               <SelectContent className="rounded-xl">
@@ -150,8 +152,8 @@ export function VisaSuggestionForm() {
                       render={({ field }) => (
                         <FormItem className="space-y-1.5">
                           <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Budget (USD)</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <SelectTrigger className="h-11 rounded-xl bg-zinc-50 dark:bg-zinc-900 border-transparent focus:border-primary/20 transition-all">
+                          <Select onValueChange={field.onChange} value={field.value}>
+                            <SelectTrigger className="h-11 w-full rounded-xl bg-zinc-50 dark:bg-zinc-900 border-transparent focus:border-primary/20 transition-all">
                               <SelectValue placeholder="Select range" />
                             </SelectTrigger>
                             <SelectContent className="rounded-xl">
@@ -228,15 +230,14 @@ export function VisaSuggestionForm() {
                       <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
                         <Sparkles className="h-5 w-5 text-primary" />
                       </div>
-                      <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border ${
-                        suggestion.probability === 'High' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
-                        suggestion.probability === 'Medium' ? 'bg-amber-50 text-amber-600 border-amber-100' :
-                        'bg-red-50 text-red-600 border-red-100'
-                      }`}>
+                      <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border ${suggestion.probability === 'High' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                          suggestion.probability === 'Medium' ? 'bg-amber-50 text-amber-600 border-amber-100' :
+                            'bg-red-50 text-red-600 border-red-100'
+                        }`}>
                         {suggestion.probability} Confidence
                       </div>
                     </div>
-                    
+
                     <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1 block">Best Match</span>
                     <h3 className="text-2xl font-black text-foreground">{suggestion.visaType}</h3>
                   </div>
