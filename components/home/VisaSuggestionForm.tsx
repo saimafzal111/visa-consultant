@@ -72,130 +72,119 @@ export function VisaSuggestionForm() {
   }
 
   return (
-    <section id="suggestion" className="py-20 bg-zinc-50 dark:bg-zinc-950/50">
+    <section id="suggestion" className="py-24 bg-white dark:bg-zinc-950">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">Find Your Perfect Visa</h2>
-          <p className="text-lg text-muted-foreground">
-            Tell us about your travel plans, and our AI will recommend the most suitable visa type for your profile in seconds.
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">Find Your Perfect Visa</h2>
+          <p className="text-lg text-muted-foreground/80 font-medium">
+            AI-driven recommendations tailored to your unique travel profile.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <Card className="shadow-lg border-primary/10">
-            <CardHeader>
-              <CardTitle>Travel Details</CardTitle>
-              <CardDescription>Fill in this quick form to get a recommendation.</CardDescription>
+        <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
+          <Card className="shadow-2xl shadow-zinc-200/50 dark:shadow-none border-zinc-200/60 dark:border-zinc-800 h-full flex flex-col rounded-[2rem] overflow-hidden">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-xl font-bold">Travel Details</CardTitle>
+              <CardDescription className="text-xs font-medium">Input your trip parameters below.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-1 pt-2">
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 h-full flex flex-col justify-between">
+                  <div className="space-y-6">
                     <FormField
                       control={form.control}
                       name="destination"
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2"><MapPin className="w-4 h-4 text-primary" /> Destination Country</FormLabel>
+                        <FormItem className="space-y-1.5">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Destination</FormLabel>
                           <FormControl>
-                            <Input placeholder="e.g. Australia, Canada" {...field} />
+                            <Input placeholder="e.g. Canada" className="h-11 rounded-xl bg-zinc-50 dark:bg-zinc-900 border-transparent focus:border-primary/20 transition-all" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-[10px]" />
                         </FormItem>
                       )}
                     />
                     
-                    <FormField
-                      control={form.control}
-                      name="purpose"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Briefcase className="w-4 h-4 text-primary" /> Purpose of Visit</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select purpose" />
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="purpose"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Purpose</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <SelectTrigger className="h-11 rounded-xl bg-zinc-50 dark:bg-zinc-900 border-transparent focus:border-primary/20 transition-all">
+                                <SelectValue placeholder="Select" />
                               </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="tourism">Tourism / Holiday</SelectItem>
-                              <SelectItem value="work">Work / Employment</SelectItem>
-                              <SelectItem value="study">Study / Education</SelectItem>
-                              <SelectItem value="business">Business / Investment</SelectItem>
-                              <SelectItem value="family">Family Visit</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                              <SelectContent className="rounded-xl">
+                                <SelectItem value="tourism">Tourism</SelectItem>
+                                <SelectItem value="work">Work</SelectItem>
+                                <SelectItem value="study">Study</SelectItem>
+                                <SelectItem value="business">Business</SelectItem>
+                                <SelectItem value="family">Family</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage className="text-[10px]" />
+                          </FormItem>
+                        )}
+                      />
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="duration"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Calendar className="w-4 h-4 text-primary" /> Intended Duration</FormLabel>
-                          <FormControl>
-                            <Input type="number" placeholder="Months (e.g. 6)" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                      <FormField
+                        control={form.control}
+                        name="duration"
+                        render={({ field }) => (
+                          <FormItem className="space-y-1.5">
+                            <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Months</FormLabel>
+                            <FormControl>
+                              <Input type="number" placeholder="Duration" className="h-11 rounded-xl bg-zinc-50 dark:bg-zinc-900 border-transparent focus:border-primary/20 transition-all" {...field} />
+                            </FormControl>
+                            <FormMessage className="text-[10px]" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
 
                     <FormField
                       control={form.control}
                       name="budget"
                       render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="flex items-center gap-2"><Wallet className="w-4 h-4 text-primary" /> Estimated Budget (USD)</FormLabel>
+                        <FormItem className="space-y-1.5">
+                          <FormLabel className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Budget (USD)</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select budget range" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
+                            <SelectTrigger className="h-11 rounded-xl bg-zinc-50 dark:bg-zinc-900 border-transparent focus:border-primary/20 transition-all">
+                              <SelectValue placeholder="Select range" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-xl">
                               <SelectItem value="low">Under $2,000</SelectItem>
                               <SelectItem value="medium">$2,000 - $5,000</SelectItem>
                               <SelectItem value="high">$5,000 - $10,000</SelectItem>
                               <SelectItem value="premium">Above $10,000</SelectItem>
                             </SelectContent>
                           </Select>
-                          <FormMessage />
+                          <FormMessage className="text-[10px]" />
                         </FormItem>
                       )}
                     />
                   </div>
 
-                  <Button type="submit" className="w-full h-12 text-lg" disabled={isAnalyzing}>
-                    {isAnalyzing ? (
-                      <span className="flex items-center gap-2">
-                        <Sparkles className="animate-spin h-5 w-5" /> Analyzing Profile...
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-2">
-                        Get AI Recommendation <ArrowRight className="h-4 w-4" />
-                      </span>
-                    )}
+                  <Button type="submit" className="w-full h-12 text-sm font-bold rounded-xl mt-6 shadow-xl shadow-primary/10 transition-transform active:scale-95" disabled={isAnalyzing}>
+                    {isAnalyzing ? "Analyzing..." : "Get Recommendation"}
                   </Button>
                 </form>
               </Form>
             </CardContent>
           </Card>
 
-          <div className="h-full flex flex-col justify-center">
-            <AnimatePresence mode="wait">
+          <div className="h-full flex flex-col justify-stretch relative">
+            <AnimatePresence>
               {!isAnalyzing && !suggestion && (
                 <motion.div
                   key="empty"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="bg-card border-2 border-dashed border-muted p-10 rounded-xl text-center flex flex-col items-center justify-center h-full min-h-[300px]"
+                  exit={{ opacity: 0, scale: 0.95, position: "absolute" }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full bg-card border-2 border-dashed border-muted p-10 rounded-xl text-center flex flex-col items-center justify-center h-full"
                 >
                   <Sparkles className="h-12 w-12 text-muted-foreground/30 mb-4" />
                   <h3 className="text-xl font-semibold text-muted-foreground mb-2">Awaiting Your Details</h3>
@@ -210,8 +199,9 @@ export function VisaSuggestionForm() {
                   key="analyzing"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  className="bg-card border p-10 rounded-xl text-center flex flex-col items-center justify-center h-full min-h-[300px]"
+                  exit={{ opacity: 0, scale: 0.95, position: "absolute" }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full bg-card border p-10 rounded-xl text-center flex flex-col items-center justify-center h-full"
                 >
                   <div className="relative mb-6">
                     <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
@@ -227,23 +217,61 @@ export function VisaSuggestionForm() {
               {suggestion && !isAnalyzing && (
                 <motion.div
                   key="result"
-                  initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                  initial={{ opacity: 0, scale: 0.98, y: 10 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  className="bg-gradient-to-br from-primary to-blue-600 text-white p-8 rounded-xl shadow-2xl h-full flex flex-col justify-center min-h-[300px]"
+                  exit={{ opacity: 0, scale: 0.98, y: -10, position: "absolute" }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-[2rem] shadow-2xl shadow-zinc-200/50 dark:shadow-none overflow-hidden h-full flex flex-col"
                 >
-                  <div className="bg-white/20 w-16 h-16 rounded-full flex items-center justify-center mb-6 backdrop-blur-md">
-                    <Sparkles className="h-8 w-8 text-white" />
+                  <div className="p-8 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
+                    <div className="flex justify-between items-start mb-6">
+                      <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                        <Sparkles className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-[0.1em] border ${
+                        suggestion.probability === 'High' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                        suggestion.probability === 'Medium' ? 'bg-amber-50 text-amber-600 border-amber-100' :
+                        'bg-red-50 text-red-600 border-red-100'
+                      }`}>
+                        {suggestion.probability} Confidence
+                      </div>
+                    </div>
+                    
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground mb-1 block">Best Match</span>
+                    <h3 className="text-2xl font-black text-foreground">{suggestion.visaType}</h3>
                   </div>
-                  <span className="text-sm font-medium uppercase tracking-wider text-white/80 mb-2">Highly Recommended Match</span>
-                  <h3 className="text-3xl md:text-4xl font-bold mb-4">{suggestion.visaType}</h3>
-                  <p className="text-white/90 mb-8 text-lg">
-                    Based on your profile, this visa offers the highest probability of approval and matches your intended duration perfectly.
-                  </p>
-                  
-                  <div className="flex flex-col sm:flex-row gap-3 mt-auto">
-                    <Button variant="secondary" className="w-full">View Requirements</Button>
-                    <Button variant="outline" className="w-full bg-transparent border-white text-white hover:bg-white/10 hover:text-white">
-                      Start Application
+
+                  <div className="p-8 flex-1 space-y-8 overflow-y-auto">
+                    <div className="space-y-3">
+                      <h4 className="text-[10px] font-black uppercase tracking-[0.1em] text-primary flex items-center gap-2">
+                        Recommendation logic
+                      </h4>
+                      <p className="text-zinc-600 dark:text-zinc-400 text-sm leading-relaxed font-medium">
+                        {suggestion.reason}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-8">
+                      <div className="space-y-2">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.1em] text-muted-foreground">Timeline</h4>
+                        <p className="text-lg font-black">{suggestion.processingTime}</p>
+                      </div>
+                      <div className="space-y-2">
+                        <h4 className="text-[10px] font-black uppercase tracking-[0.1em] text-muted-foreground">Requirements</h4>
+                        <div className="flex flex-wrap gap-1.5">
+                          {suggestion.documents.slice(0, 3).map((doc, i) => (
+                            <span key={i} className="text-[9px] font-bold bg-zinc-100 dark:bg-zinc-800 px-2 py-1 rounded-lg border border-zinc-200/50 dark:border-zinc-800 capitalize">
+                              {doc}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-8 pt-0 mt-auto">
+                    <Button className="w-full h-12 text-sm font-black rounded-xl shadow-lg shadow-primary/20 transition-transform active:scale-95">
+                      Apply Now
                     </Button>
                   </div>
                 </motion.div>

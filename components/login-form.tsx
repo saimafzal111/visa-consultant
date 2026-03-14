@@ -83,7 +83,7 @@ export function LoginForm({
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="m@example.com"
+                          placeholder="Enter your Email"
                           {...field}
                           disabled={isPending}
                         />
@@ -100,16 +100,11 @@ export function LoginForm({
                     <FormItem>
                       <div className="flex items-center">
                         <FormLabel>Password</FormLabel>
-                        <a
-                          href="#"
-                          className="ml-auto text-sm underline-offset-2 hover:underline"
-                        >
-                          Forgot password?
-                        </a>
                       </div>
                       <FormControl>
                         <div className="relative">
                           <Input
+                            placeholder="Enter your Password"
                             type={showPassword ? "text" : "password"}
                             {...field}
                             disabled={isPending}
@@ -155,12 +150,6 @@ export function LoginForm({
           </div>
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-center text-muted-foreground">
-        By clicking continue, you agree to our{" "}
-        <a href="#" className="hover:underline">Terms of Service</a>{" "}
-        and{" "}
-        <a href="#" className="hover:underline">Privacy Policy</a>.
-      </FieldDescription>
     </div>
   )
 }

@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Send, Bot, User, Sparkles, X } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -26,32 +27,57 @@ export function AIVisaAdvisor() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      scrollToBottom();
+    }
+  }, [messages, isTyping, isOpen]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isTyping) return;
 
     const userMessage: Message = { id: Date.now().toString(), role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
+    const currentInput = input;
     setInput("");
     setIsTyping(true);
 
-    // Mock AI response delay
-    setTimeout(() => {
-      const aiResponses = [
-        "In most cases, you will need a valid passport, proof of financial means, and a completed application form.",
-        "Processing times vary by country. For example, a US B1/B2 visa can take weeks to months depending on interview availability.",
-        "Your eligibility score looks good! I recommend gathering your employment references to strengthen your case.",
-        "For student visas, an acceptance letter from a recognized educational institution is strictly mandatory.",
-      ];
+    try {
+      const res = await fetch('/api/ai/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: currentInput,
+          history: messages.map(m => ({ role: m.role, content: m.content }))
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to get response');
+
       const aiMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "ai",
-        content: aiResponses[Math.floor(Math.random() * aiResponses.length)]
+        content: data.reply
       };
       setMessages((prev) => [...prev, aiMessage]);
+    } catch (err) {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "ai",
+        content: "I'm sorry, I'm having trouble connecting right now. Please try again later."
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -99,7 +125,24 @@ export function AIVisaAdvisor() {
                     </div>
                   )}
                   <div className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${msg.role === "user" ? "bg-primary text-primary-foreground rounded-br-none" : "bg-card border rounded-bl-none text-foreground shadow-sm"}`}>
-                    {msg.content}
+                    {msg.role === "ai" ? (
+                      <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-zinc-100 dark:prose-pre:bg-zinc-900 prose-pre:p-2 prose-pre:rounded-lg">
+                        <ReactMarkdown
+                          components={{
+                            p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+                            ul: ({ children }) => <ul className="list-disc ml-4 mb-2 space-y-1">{children}</ul>,
+                            ol: ({ children }) => <ol className="list-decimal ml-4 mb-2 space-y-1">{children}</ol>,
+                            li: ({ children }) => <li className="mb-1">{children}</li>,
+                            h3: ({ children }) => <h3 className="text-base font-bold mb-2 mt-3">{children}</h3>,
+                            strong: ({ children }) => <strong className="font-bold text-primary dark:text-primary">{children}</strong>,
+                          }}
+                        >
+                          {msg.content}
+                        </ReactMarkdown>
+                      </div>
+                    ) : (
+                      <div className="whitespace-pre-wrap">{msg.content}</div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -116,6 +159,7 @@ export function AIVisaAdvisor() {
                   </div>
                 </div>
               )}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Input Area */}

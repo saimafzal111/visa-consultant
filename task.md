@@ -1,18 +1,14 @@
-# Task: Implement Robust Validations & Auth Forms
+# Task: Debug Gemini Chat Response
 
-## Supabase Integration (SSR)
-- [x] Create `lib/supabase/client.ts` (Browser Client)
-- [x] Create `lib/supabase/server.ts` (Server Client)
-- [x] Create `lib/supabase/middleware.ts` (Session Management)
+## Objective
+Identify why the chatbot is returning a mock fallback when a valid Gemini key is set.
 
-## Form Validation & Components
-- [x] Create strict Zod schemas in `lib/validations/auth.ts`
-- [x] Extract strict Zod schemas for all forms to `lib/validations/forms.ts`
-- [x] Refactor `components/login-form.tsx` to use react-hook-form, zod, and Supabase Auth
-- [x] Refactor `components/signup-form.tsx` to use react-hook-form, zod, and Supabase Auth
-- [x] Refactor `EligibilityScore`, `ContactForm`, and `VisaSuggestionForm` to use external Zod schemas
+## Findings
+- Gemini key is present in `.env.local` as `GEMINI_API_KEY`.
+- User is getting the default mock fallback message.
+- Diagnostic logs added to `app/api/ai/chat/route.ts` to trace routing.
 
-## Application Routing
-- [x] Ensure /login and /signup pages use the new components appropriately
-- [x] Link `Navbar` items to correct pages
-- [x] Handle proxy routing/auth guards via `middleware.ts`
+## Plans
+- [ ] Restore error status in fallback message for debugging.
+- [ ] Explicitly prioritize Gemini if `OPENAI_API_KEY` is not the intended provider.
+- [ ] Check for Gemini SDK initialization issues.

@@ -87,7 +87,7 @@ export function SignupForm({
                       <FormItem>
                         <FormLabel>Full Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="John Doe" {...field} disabled={isPending} />
+                          <Input placeholder="Enter your Name" {...field} disabled={isPending} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -100,7 +100,7 @@ export function SignupForm({
                       <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                          <Input type="tel" placeholder="+1 234 567 890" {...field} disabled={isPending} />
+                          <Input type="tel" placeholder="03001234567" {...field} disabled={isPending} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -117,7 +117,7 @@ export function SignupForm({
                       <FormControl>
                         <Input
                           type="email"
-                          placeholder="m@example.com"
+                          placeholder="Enter your Email"
                           {...field}
                           disabled={isPending}
                         />
@@ -136,6 +136,7 @@ export function SignupForm({
                       <FormControl>
                         <div className="relative">
                           <Input
+                            placeholder="Enter your Password"
                             type={showPassword ? "text" : "password"}
                             {...field}
                             disabled={isPending}
@@ -170,6 +171,7 @@ export function SignupForm({
                       <FormControl>
                         <div className="relative">
                           <Input
+                            placeholder="Confirm your Password"
                             type={showConfirmPassword ? "text" : "password"}
                             {...field}
                             disabled={isPending}
@@ -219,12 +221,6 @@ export function SignupForm({
           </div>
         </CardContent>
       </Card>
-      <FieldDescription className="px-6 text-center text-muted-foreground">
-        By clicking continue, you agree to our{" "}
-        <a href="#" className="hover:underline">Terms of Service</a>{" "}
-        and{" "}
-        <a href="#" className="hover:underline">Privacy Policy</a>.
-      </FieldDescription>
     </div>
   )
 }

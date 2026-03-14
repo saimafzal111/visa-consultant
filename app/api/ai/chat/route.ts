@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
-
 export async function POST(request: NextRequest) {
   try {
     const { message, history } = await request.json()
@@ -11,36 +9,128 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message is required' }, { status: 400 })
     }
 
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
+    // Prepare history for OpenAI
+    const openAiMessages = [
+      {
+        role: 'system',
+        content: `You are VisaBot, a premium and highly professional AI visa consultant. Your goal is to provide information that is clear, formal, and extremely organized.
 
-    // Build conversation history for Gemini
-    const chat = model.startChat({
-      history: [
-        {
-          role: 'user',
-          parts: [{ text: 'You are VisaBot, an expert AI visa consultant. You help users understand visa types, required documents, eligibility, processing times, and immigration procedures for countries worldwide. Be concise, friendly, and professional. If a question is unrelated to visas or immigration, politely redirect the conversation.' }],
-        },
-        {
-          role: 'model',
-          parts: [{ text: 'Hello! I\'m VisaBot, your AI visa consultant. I\'m here to help you navigate the world of visas and immigration. Whether you need guidance on visa types, required documents, or processing times, I\'ve got you covered. What would you like to know?' }],
-        },
-        // Include previous conversation turns
-        ...(history || []).map((msg: { role: string; content: string }) => ({
-          role: msg.role === 'ai' ? 'model' : 'user',
-          parts: [{ text: msg.content }],
-        })),
-      ],
-    })
+        COMMUNICATION GUIDELINES:
+        - TONE: Professional, authoritative, yet helpful.
+        - STRUCTURE: Never use long paragraphs. Always break down information into logical sections.
+        - FORMATTING: 
+          - Use **Bold Headers** for each section.
+          - Use bullet points (•) for lists and requirements.
+          - Use bold text for key dates, fees, or critical terms.
+          - Add a single line break between different points or sections to ensure clarity.
+        - AUDIENCE: Speak to non-technical users in simple but formal language.`
+      },
+      ...(history || []).map((msg: { role: string; content: string }) => ({
+        role: msg.role === 'ai' ? 'assistant' : 'user',
+        content: msg.content,
+      })),
+      { role: 'user', content: message }
+    ]
 
-    const result = await chat.sendMessage(message)
-    const response = result.response.text()
+    const geminiKey = process.env.GEMINI_API_KEY
+    const groqKey = process.env.GROQ_API_KEY
+    
+    // --- Phase 1: Try Groq ---
+    if (groqKey?.startsWith('gsk_')) {
+      console.log('Attempting Groq Call (Llama 3.3)...')
+      try {
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${groqKey}`,
+          },
+          body: JSON.stringify({
+            model: 'llama-3.3-70b-versatile', 
+            messages: openAiMessages, // Uses same message format as OpenAI
+            temperature: 0.7,
+          }),
+        })
 
-    return NextResponse.json({ reply: response }, { status: 200 })
+        if (response.ok) {
+          const data = await response.json()
+          const reply = data.choices?.[0]?.message?.content
+          if (reply) return NextResponse.json({ reply }, { status: 200 })
+        } else {
+          const errorData = await response.json().catch(() => ({}))
+          console.error('Groq API Error:', response.status, errorData?.error?.message)
+        }
+      } catch (err) {
+        console.error('Groq Fetch Failed:', err)
+      }
+    }
+
+    // --- Phase 2: Try Gemini Fallback ---
+    if (geminiKey?.startsWith('AIza')) {
+      console.log('Attempting Gemini Fallback...')
+      return await handleGeminiChat(message, history, geminiKey)
+    }
+
+    // --- Phase 3: Ultimate Fallback ---
+    return handleMockFallback(message, "All AI providers failed")
+
   } catch (error) {
-    console.error('AI chat error:', error)
+    console.error('Critical AI Route Error:', error)
     return NextResponse.json(
-      { error: 'Failed to get AI response. Please try again.' },
+      { error: 'System error. Please try again later.' },
       { status: 500 }
     )
   }
 }
+
+async function handleGeminiChat(message: string, history: any[], key: string) {
+  try {
+    const genAI = new GoogleGenerativeAI(key)
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+    
+    // Convert history to Gemini's expected format (user/model)
+    const chatHistory = (history || []).map(msg => ({
+      role: msg.role === 'ai' ? 'model' : 'user',
+      parts: [{ text: msg.content }]
+    }))
+
+    const chat = model.startChat({
+      history: chatHistory,
+      generationConfig: {
+        maxOutputTokens: 1000,
+      },
+    })
+
+    const result = await chat.sendMessage(message)
+    const reply = result.response.text()
+    
+    return NextResponse.json({ reply }, { 
+      status: 200,
+      headers: { 'X-Chat-Source': 'gemini' } 
+    })
+  } catch (err) {
+    console.error('Gemini SDK Error:', err)
+    return handleMockFallback(message, `Gemini failure: ${err instanceof Error ? err.message : 'Unknown'}`)
+  }
+}
+
+function handleMockFallback(message: string, reason?: string) {
+  const lowerMsg = message.toLowerCase()
+  let reply = ""
+  
+  console.log('Using Mock Fallback. Reason:', reason)
+
+  if (lowerMsg.includes('australia')) {
+    reply = "For Australia, you'll likely need to look into Subclass 600 (Tourist) or Subclass 500 (Student) visas. You'll need a valid passport and proof of sufficient funds."
+  } else if (lowerMsg.includes('canada')) {
+    reply = "For Canada, a Visitor Visa (TRV) or eTA is common for tourists. If you want to work, look into the Express Entry system or LMIA-backed permits."
+  } else if (lowerMsg.includes('document')) {
+    reply = "Across most countries, the 'Golden Trio' of documents are: 1) A passport with 6 months validity, 2) Recent bank statements, and 3) Proof of return travel."
+  } else {
+    reply = "I'm having trouble connecting to my AI brains right now. I'm usually an expert, but it seems there's a connection issue. Please try describing your visa query again in a moment!"
+  }
+
+  return NextResponse.json({ reply, debug: reason }, { status: 200 })
+}
+
+
