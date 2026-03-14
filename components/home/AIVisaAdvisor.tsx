@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Send, Bot, User, Sparkles, X } from "lucide-react";
+import { Send, Bot, User, Sparkles, X, CheckCheck } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -118,33 +118,40 @@ export function AIVisaAdvisor() {
             {/* Chat Area */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-zinc-50 dark:bg-zinc-950/50">
               {messages.map((msg) => (
-                <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"} gap-2`}>
-                  {msg.role === "ai" && (
-                    <div className="w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-primary" />
-                    </div>
-                  )}
-                  <div className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${msg.role === "user" ? "bg-primary text-primary-foreground rounded-br-none" : "bg-card border rounded-bl-none text-foreground shadow-sm"}`}>
-                    {msg.role === "ai" ? (
-                      <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-zinc-100 dark:prose-pre:bg-zinc-900 prose-pre:p-2 prose-pre:rounded-lg">
-                        <ReactMarkdown
-                          components={{
-                            p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                            ul: ({ children }) => <ul className="list-disc ml-4 mb-2 space-y-1">{children}</ul>,
-                            ol: ({ children }) => <ol className="list-decimal ml-4 mb-2 space-y-1">{children}</ol>,
-                            li: ({ children }) => <li className="mb-1">{children}</li>,
-                            h3: ({ children }) => <h3 className="text-base font-bold mb-2 mt-3">{children}</h3>,
-                            strong: ({ children }) => <strong className="font-bold text-primary dark:text-primary">{children}</strong>,
-                          }}
-                        >
-                          {msg.content}
-                        </ReactMarkdown>
+                <div key={msg.id} className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"} gap-1.5`}>
+                    {msg.role === "ai" && (
+                      <div className="flex items-center gap-1.5 ml-1 mb-0.5">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-1.5 py-0.5 rounded-md flex items-center gap-1">
+                          <Sparkles className="h-2.5 w-2.5" />
+                          Verified Advisor
+                        </span>
                       </div>
-                    ) : (
-                      <div className="whitespace-pre-wrap">{msg.content}</div>
                     )}
+                    <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm transition-all duration-200 ${
+                      msg.role === "user" 
+                        ? "bg-primary text-primary-foreground rounded-br-none shadow-md" 
+                        : "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-bl-none text-foreground shadow-sm hover:shadow-md"
+                    }`}>
+                      {msg.role === "ai" ? (
+                        <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-headings:mb-2 prose-headings:mt-4 first:prose-headings:mt-0">
+                          <ReactMarkdown
+                            components={{
+                              p: ({ children }) => <p className="mb-3 last:mb-0 text-zinc-700 dark:text-zinc-300">{children}</p>,
+                              ul: ({ children }) => <ul className="list-disc ml-5 mb-3 space-y-1.5 text-zinc-700 dark:text-zinc-300">{children}</ul>,
+                              ol: ({ children }) => <ol className="list-decimal ml-5 mb-3 space-y-1.5 text-zinc-700 dark:text-zinc-300">{children}</ol>,
+                              li: ({ children }) => <li className="pl-1">{children}</li>,
+                              h3: ({ children }) => <h3 className="text-zinc-900 dark:text-white text-base font-bold mb-2 mt-4">{children}</h3>,
+                              strong: ({ children }) => <strong className="font-semibold text-zinc-900 dark:text-white border-b border-primary/20">{children}</strong>,
+                            }}
+                          >
+                            {msg.content}
+                          </ReactMarkdown>
+                        </div>
+                      ) : (
+                        <div className="whitespace-pre-wrap">{msg.content}</div>
+                      )}
+                    </div>
                   </div>
-                </div>
               ))}
 
               {isTyping && (
