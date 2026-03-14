@@ -7,10 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
 
 type Destination = typeof destinations[0];
 
@@ -161,66 +157,125 @@ export function VisaInformationDirectory() {
             ))}
           </AnimatePresence>
 
-          {/* Detailed Dialog */}
-          <Dialog open={!!selectedDest} onOpenChange={(open) => !open && setSelectedDest(null)}>
-            <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden rounded-2xl border-none">
-              {selectedDest && (
-                <div className="flex flex-col">
-                  {/* Dialog Header/Hero */}
-                  <div className="bg-primary p-8 text-primary-foreground relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-12 opacity-10 scale-[3] pointer-events-none">
-                      {selectedDest.image}
-                    </div>
-                    <div className="relative z-10">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-4xl">{selectedDest.image}</span>
-                        <Badge variant="outline" className="text-white border-white/20 bg-white/10">
-                          {selectedDest.difficulty} Difficulty
-                        </Badge>
-                      </div>
-                      <h2 className="text-3xl font-black">{selectedDest.country}</h2>
-                      <p className="text-primary-foreground/80 font-medium">{selectedDest.type}</p>
-                    </div>
-                  </div>
+          {/* Detailed Side Panel (Drawer) */}
+          <AnimatePresence mode="wait">
+            {selectedDest && (
+              <>
+                {/* Backdrop */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setSelectedDest(null)}
+                  className="fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm cursor-pointer"
+                />
+                
+                {/* Panel */}
+                <motion.div
+                  initial={{ x: "100%" }}
+                  animate={{ x: 0 }}
+                  exit={{ x: "100%" }}
+                  transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                  className="fixed inset-y-0 right-0 z-[70] w-full max-w-lg bg-white dark:bg-zinc-950 shadow-2xl border-l border-zinc-200 dark:border-zinc-800 flex flex-col h-full"
+                >
+                  {/* Close button for better UX */}
+                  <button 
+                    onClick={() => setSelectedDest(null)}
+                    className="absolute top-6 right-6 z-[80] p-2 rounded-full bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 transition-colors text-white"
+                  >
+                    <ChevronDown className="h-6 w-6 rotate-90" />
+                  </button>
 
-                  <div className="p-8 space-y-8 bg-white dark:bg-zinc-950">
-                    <div className="grid grid-cols-2 gap-8">
-                      <div className="space-y-1">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Processing Time</p>
-                        <p className="font-bold flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-primary" /> {selectedDest.processingTime}
+                  <div className="flex flex-col h-full">
+                    {/* Header/Hero Section */}
+                    <div className="bg-primary p-12 text-primary-foreground relative overflow-hidden shrink-0">
+                      <div className="absolute top-0 right-0 p-12 opacity-10 scale-[4] pointer-events-none select-none">
+                        {selectedDest.image}
+                      </div>
+                      <div className="relative z-10">
+                        <div className="flex items-center gap-4 mb-4">
+                          <span className="text-5xl">{selectedDest.image}</span>
+                          <Badge variant="outline" className="text-white border-white/40 bg-white/10 backdrop-blur-md px-3 py-1 uppercase tracking-widest text-[10px] font-black">
+                            {selectedDest.difficulty} Difficulty
+                          </Badge>
+                        </div>
+                        <h2 className="text-4xl font-black tracking-tight">{selectedDest.country}</h2>
+                        <p className="text-primary-foreground/80 font-bold text-lg mt-1">{selectedDest.type}</p>
+                      </div>
+                    </div>
+
+                    {/* Stats Grid */}
+                    <div className="p-8 bg-zinc-50 dark:bg-zinc-900 border-b border-zinc-100 dark:border-zinc-800 grid grid-cols-2 gap-8 shrink-0">
+                      <div className="space-y-2">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+                          <Clock className="h-3 w-3" /> Processing Time
+                        </p>
+                        <p className="text-xl font-bold">{selectedDest.processingTime}</p>
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-1.5">
+                          <DollarSign className="h-3 w-3" /> Visa Fee
+                        </p>
+                        <p className="text-xl font-bold">{selectedDest.fee}</p>
+                      </div>
+                    </div>
+
+                    {/* Scrollable Requirements Section */}
+                    <div className="flex-1 overflow-y-auto p-8 space-y-8">
+                      <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                          <h4 className="text-[11px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                            <FileText className="h-4 w-4" /> Comprehensive Requirements
+                          </h4>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-primary/5 text-primary border border-primary/10">
+                            {selectedDest.requirements.length} Items
+                          </span>
+                        </div>
+                        
+                        <div className="space-y-3">
+                          {selectedDest.requirements.map((req, idx) => (
+                            <motion.div 
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: idx * 0.05 }}
+                              key={idx} 
+                              className="group flex items-center gap-4 p-4 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 hover:border-primary/30 hover:shadow-sm transition-all"
+                            >
+                              <div className="h-10 w-10 rounded-xl bg-zinc-50 dark:bg-zinc-800 flex items-center justify-center text-primary font-bold text-sm shrink-0 border border-zinc-100 dark:border-zinc-700">
+                                {idx + 1}
+                              </div>
+                              <span className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 group-hover:text-primary transition-colors">{req}</span>
+                            </motion.div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Pro Tip Placeholder for added "Elite" feel */}
+                      <div className="p-6 rounded-2xl bg-primary/5 border border-primary/20 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-4 opacity-5">
+                          <Map className="h-12 w-12" />
+                        </div>
+                        <h5 className="text-xs font-black text-primary uppercase tracking-widest mb-2">Expert Advisor Tip</h5>
+                        <p className="text-sm font-medium text-zinc-600 dark:text-zinc-400">
+                          {selectedDest.country} requires thorough documentation. Ensure all bank statements are attested by your branch manager for a smoother approval process.
                         </p>
                       </div>
-                      <div className="space-y-1">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Visa Fee</p>
-                        <p className="font-bold flex items-center gap-2">
-                          <DollarSign className="h-4 w-4 text-primary" /> {selectedDest.fee}
-                        </p>
-                      </div>
                     </div>
 
-                    <div className="space-y-4">
-                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-                        <FileText className="h-4 w-4" /> Required Documents
+                    {/* Footer Action */}
+                    <div className="p-8 bg-zinc-50/50 dark:bg-zinc-900/50 backdrop-blur-md border-t border-zinc-200 dark:border-zinc-800 shrink-0">
+                      <Button className="w-full h-16 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 hover:shadow-primary/30 transform active:scale-[0.98] transition-all">
+                        Initiate Application Process
+                      </Button>
+                      <p className="text-[10px] text-center text-muted-foreground mt-4 font-bold uppercase tracking-widest">
+                        Secure Submission Portal • 256-bit Encryption
                       </p>
-                      <div className="grid grid-cols-1 gap-3">
-                        {selectedDest.requirements.map((req, idx) => (
-                          <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800">
-                            <div className="h-2 w-2 rounded-full bg-primary shrink-0" />
-                            <span className="text-sm font-medium">{req}</span>
-                          </div>
-                        ))}
-                      </div>
                     </div>
-
-                    <Button className="w-full h-14 rounded-xl text-md font-black shadow-xl shadow-primary/20 transition-transform active:scale-95">
-                      Apply for {selectedDest.country} Visa
-                    </Button>
                   </div>
-                </div>
-              )}
-            </DialogContent>
-          </Dialog>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
           
           {filteredDestinations.length === 0 && (
             <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center py-20 text-muted-foreground">
