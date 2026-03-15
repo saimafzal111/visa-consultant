@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Map, Clock, DollarSign, FileText, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -96,6 +96,14 @@ export function VisaInformationDirectory() {
     dest.country.toLowerCase().includes(searchTerm.toLowerCase()) ||
     dest.type.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  }, [isFormView, selectedDest]);
 
   const resetState = () => {
     setSelectedDest(null);
@@ -290,7 +298,7 @@ export function VisaInformationDirectory() {
                     </div>
 
                     {/* Content Section with View Switching */}
-                    <div className="flex-1 overflow-y-auto">
+                    <div ref={scrollRef} className="flex-1 overflow-y-auto">
                       <AnimatePresence mode="wait">
                         {!isFormView ? (
                           <motion.div
@@ -427,22 +435,23 @@ export function VisaInformationDirectory() {
                         )}
                       </AnimatePresence>
                       
-                      <div className="flex gap-4">
-                        {isFormView && (
-                          <button 
-                            onClick={() => setIsFormView(false)}
-                            className="h-16 w-16 rounded-2xl flex items-center justify-center border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                          >
-                            <ChevronDown className="rotate-90 h-6 w-6" />
-                          </button>
-                        )}
+                      <div className="flex flex-col items-center justify-center gap-4 w-full">
                         <Button 
                           onClick={() => selectedDest && handleInitiateApplication(selectedDest)}
                           disabled={isSubmitting}
-                          className="flex-1 h-16 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 hover:shadow-primary/30 transform active:scale-[0.98] transition-all disabled:opacity-50"
+                          className="w-full max-w-sm min-h-[4rem] h-auto py-4 px-6 rounded-2xl text-lg font-black shadow-2xl shadow-primary/20 hover:shadow-primary/30 transform active:scale-[0.98] transition-all disabled:opacity-50 whitespace-normal leading-tight"
                         >
                           {isSubmitting ? "Initiating..." : isFormView ? "Confirm & Initiate" : `Start Application for ${selectedDest?.country}`}
                         </Button>
+                        
+                        {isFormView && (
+                          <button 
+                            onClick={() => setIsFormView(false)}
+                            className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+                          >
+                            <ChevronDown className="h-4 w-4 rotate-90" /> Go Back
+                          </button>
+                        )}
                       </div>
                       <p className="text-[10px] text-center text-muted-foreground mt-4 font-bold uppercase tracking-widest">
                         Secure Submission Portal • 256-bit Encryption

@@ -44,7 +44,7 @@ export function AIVisaAdvisor() {
     if (isOpen) {
       scrollToBottom();
     }
-  }, [messages, isTyping, isOpen]);
+  }, [messages, isTyping]);
 
   const copyToClipboard = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
