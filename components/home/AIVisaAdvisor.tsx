@@ -100,7 +100,7 @@ export function AIVisaAdvisor() {
       {/* Floating Action Button */}
       {!isOpen && (
         <motion.button
-          className="fixed bottom-6 right-6 h-14 w-14 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center z-50 hover:bg-primary/90 transition-all"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 h-14 w-14 bg-primary text-primary-foreground rounded-full shadow-lg flex items-center justify-center z-50 hover:bg-primary/90 transition-all"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setIsOpen(true)}
@@ -116,7 +116,7 @@ export function AIVisaAdvisor() {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed bottom-6 right-6 w-[350px] sm:w-[400px] h-[500px] z-50 rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-border bg-background"
+            className="fixed bottom-4 right-4 left-4 w-auto sm:left-auto sm:right-6 sm:bottom-6 sm:w-[400px] h-[500px] z-50 rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-border bg-background"
           >
             {/* Header */}
             <div className="bg-primary p-4 flex items-center justify-between text-primary-foreground shadow-sm">
