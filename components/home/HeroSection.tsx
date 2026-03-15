@@ -9,7 +9,7 @@ export function HeroSection() {
   return (
     <div className="relative overflow-hidden bg-background pt-[120px] pb-[100px] z-0">
       <div className="absolute inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background"></div>
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
@@ -21,8 +21,8 @@ export function HeroSection() {
               AI-Powered Visa Guidance
             </span>
           </motion.div>
-          
-          <motion.h1 
+
+          <motion.h1
             className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 text-foreground"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -30,8 +30,8 @@ export function HeroSection() {
           >
             Navigate Your Global Journey with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">Confidence</span>
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-2xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -39,25 +39,29 @@ export function HeroSection() {
           >
             Discover the right visa, check your eligibility, and get step-by-step guidance tailored to your unique profile in minutes.
           </motion.p>
-          
-          <motion.div 
+
+          <motion.div
             className="flex flex-col sm:flex-row gap-4 justify-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Button size="lg" className="h-14 px-8 text-lg rounded-full group">
-              Start Your Visa Check
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full">
-              Explore Destinations
-            </Button>
+            <Link href="/visa-check">
+              <Button size="lg" className="h-14 px-8 text-lg rounded-full group w-full cursor-pointer">
+                Start Your Visa Check
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <Link href="/destinations">
+              <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full w-full cursor-pointer">
+                Explore Destinations
+              </Button>
+            </Link>
           </motion.div>
         </div>
 
         {/* Features Stats */}
-        <motion.div 
+        <motion.div
           className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}

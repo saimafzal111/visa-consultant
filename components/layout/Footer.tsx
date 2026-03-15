@@ -20,9 +20,9 @@ export function Footer() {
         <div>
           <h3 className="font-semibold mb-4">Quick Links</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><Link href="#suggestion" className="hover:text-primary">Find a Visa</Link></li>
-            <li><Link href="#directory" className="hover:text-primary">Country Directory</Link></li>
-            <li><Link href="#score" className="hover:text-primary">Eligibility Check</Link></li>
+            <li><Link href="/visa-check" className="hover:text-primary">Find a Visa</Link></li>
+            <li><Link href="/destinations" className="hover:text-primary">Country Directory</Link></li>
+            <li><Link href="/#score" className="hover:text-primary">Eligibility Check</Link></li>
           </ul>
         </div>
 

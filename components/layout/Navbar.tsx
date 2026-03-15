@@ -21,16 +21,16 @@ export async function Navbar() {
         </div>
 
         <nav className="hidden md:flex gap-6 items-center">
-          <Link href="#suggestion" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+          <Link href="/visa-check" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Get Suggested
           </Link>
-          <Link href="#directory" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+          <Link href="/destinations" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Destinations
           </Link>
-          <Link href="#score" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+          <Link href="/#score" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Eligibility Score
           </Link>
-          <Link href="#contact" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+          <Link href="/#contact" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
             Contact
           </Link>
         </nav>
