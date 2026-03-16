@@ -7,8 +7,8 @@ import Link from "next/link";
 
 export function HeroSection() {
   return (
-    <div className="relative overflow-hidden bg-background pt-[120px] pb-[100px] z-0">
-      <div className="absolute inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background"></div>
+    <div className="relative overflow-hidden bg-background pt-30 pb-25 z-0">
+      <div className="absolute inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/20 via-background to-background"></div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
@@ -28,7 +28,7 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Navigate Your Global Journey with <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600">Confidence</span>
+            Navigate Your Global Journey with <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-blue-600">Confidence</span>
           </motion.h1>
 
           <motion.p

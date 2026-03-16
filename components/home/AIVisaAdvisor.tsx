@@ -116,7 +116,7 @@ export function AIVisaAdvisor() {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed bottom-4 right-4 left-4 w-auto sm:left-auto sm:right-6 sm:bottom-6 sm:w-[400px] h-[500px] z-50 rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-border bg-background"
+            className="fixed bottom-4 right-4 left-4 w-auto sm:left-auto sm:right-6 sm:bottom-6 sm:w-100 h-125 z-50 rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-border bg-background"
           >
             {/* Header */}
             <div className="bg-primary p-4 flex items-center justify-between text-primary-foreground shadow-sm">
