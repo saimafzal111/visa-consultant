@@ -28,7 +28,10 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Navigate Your Global Journey with <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-blue-600">Confidence</span>
+            Navigate Your Global Journey with{" "}
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-blue-600">
+              Confidence
+            </span>
           </motion.h1>
 
           <motion.p
@@ -37,7 +40,8 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Discover the right visa, check your eligibility, and get step-by-step guidance tailored to your unique profile in minutes.
+            Discover the right visa, check your eligibility, and get
+            step-by-step guidance tailored to your unique profile in minutes.
           </motion.p>
 
           <motion.div
@@ -47,13 +51,20 @@ export function HeroSection() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <Link href="/visa-check">
-              <Button size="lg" className="h-14 px-8 text-lg rounded-full group w-full cursor-pointer">
+              <Button
+                size="lg"
+                className="h-14 px-8 text-lg rounded-full group w-full cursor-pointer"
+              >
                 Start Your Visa Check
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link href="/destinations">
-              <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full w-full cursor-pointer">
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-14 px-8 text-lg rounded-full w-full cursor-pointer"
+              >
                 Explore Destinations
               </Button>
             </Link>
@@ -72,7 +83,10 @@ export function HeroSection() {
               <BrainCircuit className="h-6 w-6" />
             </div>
             <h3 className="text-lg font-bold mb-2">Smart Suggestions</h3>
-            <p className="text-muted-foreground text-sm">Our AI analyzes your profile instantly to recommend the best visa types.</p>
+            <p className="text-muted-foreground text-sm">
+              Our AI analyzes your profile instantly to recommend the best visa
+              types.
+            </p>
           </div>
 
           <div className="bg-card border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
@@ -80,7 +94,9 @@ export function HeroSection() {
               <Globe2 className="h-6 w-6" />
             </div>
             <h3 className="text-lg font-bold mb-2">100+ Destinations</h3>
-            <p className="text-muted-foreground text-sm">Get real-time visa requirements and processing times globally.</p>
+            <p className="text-muted-foreground text-sm">
+              Get real-time visa requirements and processing times globally.
+            </p>
           </div>
 
           <div className="bg-card border p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
@@ -88,7 +104,10 @@ export function HeroSection() {
               <FileCheck className="h-6 w-6" />
             </div>
             <h3 className="text-lg font-bold mb-2">Eligibility Score</h3>
-            <p className="text-muted-foreground text-sm">Know your chances before you apply with our advanced scoring system.</p>
+            <p className="text-muted-foreground text-sm">
+              Know your chances before you apply with our advanced scoring
+              system.
+            </p>
           </div>
         </motion.div>
       </div>

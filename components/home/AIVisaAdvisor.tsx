@@ -132,10 +132,10 @@ export function AIVisaAdvisor() {
                   </div>
                 </div>
               </div>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setIsOpen(false)} 
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsOpen(false)}
                 className="text-primary-foreground hover:bg-white/20 rounded-full h-8 w-8"
               >
                 <X className="h-5 w-5" />
@@ -146,11 +146,10 @@ export function AIVisaAdvisor() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-zinc-50 dark:bg-zinc-950/50">
               {messages.map((msg, index) => (
                 <div key={msg.id} className={`flex flex-col ${msg.role === "user" ? "items-end" : "items-start"} gap-1`}>
-                  <div className={`relative max-w-[85%] rounded-2xl px-4 py-3 text-sm transition-all duration-200 group ${
-                    msg.role === "user" 
-                      ? "bg-primary text-primary-foreground rounded-br-none shadow-sm" 
+                  <div className={`relative max-w-[85%] rounded-2xl px-4 py-3 text-sm transition-all duration-200 group ${msg.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-br-none shadow-sm"
                       : "bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-bl-none text-foreground shadow-sm"
-                  }`}>
+                    }`}>
                     {msg.role === "ai" ? (
                       <>
                         <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-headings:mb-2 prose-headings:mt-4 first:prose-headings:mt-0">
@@ -167,7 +166,7 @@ export function AIVisaAdvisor() {
                             {msg.content}
                           </ReactMarkdown>
                         </div>
-                        <button 
+                        <button
                           onClick={() => copyToClipboard(msg.content, msg.id)}
                           className="absolute -top-2 -right-2 p-1.5 rounded-full text-zinc-400 hover:text-primary hover:bg-white opacity-0 group-hover:opacity-100 transition-all border border-zinc-100 shadow-sm bg-white"
                         >
@@ -178,7 +177,7 @@ export function AIVisaAdvisor() {
                       <div className="whitespace-pre-wrap">{msg.content}</div>
                     )}
                   </div>
-                  
+
                   {/* Quick Actions */}
                   {msg.role === "ai" && index === messages.length - 1 && !isTyping && (
                     <div className="flex flex-wrap gap-2 mt-2">
@@ -218,10 +217,10 @@ export function AIVisaAdvisor() {
                   placeholder="Ask a visa question..."
                   className="pr-12 rounded-xl bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 focus-visible:ring-primary h-11"
                 />
-                <Button 
-                  type="submit" 
-                  size="icon" 
-                  className="absolute right-1 w-9 h-9 rounded-lg" 
+                <Button
+                  type="submit"
+                  size="icon"
+                  className="absolute right-1 w-9 h-9 rounded-lg"
                   disabled={!input.trim() || isTyping}
                 >
                   <Send className="h-4 w-4" />

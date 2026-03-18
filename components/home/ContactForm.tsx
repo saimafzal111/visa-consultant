@@ -32,19 +32,24 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contact" className="py-20 bg-background relative overflow-hidden">
+    <section
+      id="contact"
+      className="py-20 bg-background relative overflow-hidden"
+    >
       {/* Decorative blobs */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-3xl translate-y-1/3 -translate-x-1/3"></div>
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12">
-          
           {/* Contact Info */}
           <div className="flex flex-col justify-center">
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">Get in Touch with Our Experts</h2>
+            <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-6">
+              Get in Touch with Our Experts
+            </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Have a complex visa case or just need personalized guidance? Drop us a message and our immigration specialists will reply promptly.
+              Have a complex visa case or just need personalized guidance? Drop
+              us a message and our immigration specialists will reply promptly.
             </p>
 
             <div className="space-y-6">
@@ -64,7 +69,9 @@ export function ContactForm() {
                 </div>
                 <div>
                   <h4 className="font-semibold">Email Us</h4>
-                  <p className="text-muted-foreground">support@visaguide.consulting</p>
+                  <p className="text-muted-foreground">
+                    support@visaguide.consulting
+                  </p>
                 </div>
               </div>
 
@@ -74,7 +81,9 @@ export function ContactForm() {
                 </div>
                 <div>
                   <h4 className="font-semibold">Visit Our Office</h4>
-                  <p className="text-muted-foreground">Level 42, 100 World Avenue, NY 10001</p>
+                  <p className="text-muted-foreground">
+                    Level 42, 100 World Avenue, NY 10001
+                  </p>
                 </div>
               </div>
             </div>
@@ -83,7 +92,10 @@ export function ContactForm() {
           {/* Form */}
           <div className="bg-card border p-8 rounded-2xl shadow-xl">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4"
+              >
                 <FormField
                   control={form.control}
                   name="name"
@@ -91,13 +103,17 @@ export function ContactForm() {
                     <FormItem>
                       <FormLabel>Full Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" className="bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:bg-background transition-colors" {...field} />
+                        <Input
+                          placeholder="John Doe"
+                          className="bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:bg-background transition-colors"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
@@ -106,7 +122,11 @@ export function ContactForm() {
                       <FormItem>
                         <FormLabel>Email Address</FormLabel>
                         <FormControl>
-                          <Input placeholder="john@example.com" className="bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:bg-background transition-colors" {...field} />
+                          <Input
+                            placeholder="john@example.com"
+                            className="bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:bg-background transition-colors"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -119,7 +139,11 @@ export function ContactForm() {
                       <FormItem>
                         <FormLabel>Phone Number</FormLabel>
                         <FormControl>
-                          <Input placeholder="+1 234 567 89" className="bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:bg-background transition-colors" {...field} />
+                          <Input
+                            placeholder="+1 234 567 89"
+                            className="bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:bg-background transition-colors"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -134,10 +158,10 @@ export function ContactForm() {
                     <FormItem>
                       <FormLabel>Your Message</FormLabel>
                       <FormControl>
-                        <Textarea 
-                          placeholder="Tell us about your visa inquiry..." 
-                          className="min-h-[120px] resize-none bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:bg-background transition-colors" 
-                          {...field} 
+                        <Textarea
+                          placeholder="Tell us about your visa inquiry..."
+                          className="min-h-[120px] resize-none bg-muted/50 border-transparent focus-visible:ring-primary focus-visible:bg-background transition-colors"
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
